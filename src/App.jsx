@@ -1,9 +1,11 @@
+import FormTask from "./components/FormTask";
+
 function App() {
   return (
-    <>
-      <h1>Hola</h1>
-    </>
-  )
+    <div>
+      <FormTask />
+    </div>
+  );
 }
 
-export default App
+export default App;
