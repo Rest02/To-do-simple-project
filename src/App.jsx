@@ -1,38 +1,33 @@
-import { useState } from "react";
 import FormTask from "./components/FormTask";
+import { useState } from "react";
 
 function App() {
-  const [listaTareas, setListaTareas] = useState([
-    { name: "Mi primer tarea", estado: false },
-    { name: "Mi segunda tarea", estado: false },
-    { name: "Mi tercera tarea", estado: false },
-  ]);
+  const [tareas, setTareas] = useState(
+    [
+      { name: "Mi primer tarea", estado: false },
+      { name: "Mi segunda tarea", estado: false },
+      { name: "Mi tercer tarea", estado: false },
+    ],
+    []
+  );
 
   function createTask(taskName) {
-    if (listaTareas.find((task) => task.name === taskName)) {
-      alert("La tarea ya existe");
+    if (tareas.find((e) => e.name === taskName)) {
+      alert("Su tarea ya fue puesta");
     } else {
-      setListaTareas([
-        ...listaTareas,
+      setTareas([
+        ...tareas,
         {
           name: taskName,
           estado: false,
         },
       ]);
     }
-
-    // if(!listaTareas.find(task => task.name === taskName)){
-    //   setListaTareas([...listaTareas, {
-    //     name : taskName,
-    //     estado: false
-    //   }])
-    // }
   }
 
   return (
     <div>
       <FormTask createTask={createTask} />
-
       <table>
         <thead>
           <tr>
@@ -40,7 +35,7 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          {listaTareas.map((e) => (
+          {tareas.map((e) => (
             <tr key={e.name}>
               <td>{e.name}</td>
             </tr>
