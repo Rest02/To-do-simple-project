@@ -1,15 +1,16 @@
 import FormTask from "./components/FormTask";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-  const [tareas, setTareas] = useState(
-    [
-      { name: "Mi primer tarea", estado: false },
-      { name: "Mi segunda tarea", estado: false },
-      { name: "Mi tercer tarea", estado: false },
-    ],
-    []
-  );
+  const [tareas, setTareas] = useState([
+    { name: "Mi primer tarea", estado: false },
+    { name: "Mi segunda tarea", estado: false },
+    { name: "Mi tercer tarea", estado: false },
+  ]);
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tareas));
+  }, [tareas]);
 
   function createTask(taskName) {
     if (tareas.find((e) => e.name === taskName)) {
