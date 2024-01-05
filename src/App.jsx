@@ -1,34 +1,23 @@
 import { useEffect, useState } from "react";
+import TaskTable from "./components/TaskTable";
 import FormTask from "./components/FormTask";
 
 function App() {
   const [tareas, setTareas] = useState([]);
 
+  useEffect(() => {
+    let valor = localStorage.getItem("tasks");
+    if (valor) {
+      setTareas(JSON.parse(valor));
+    }
+  }, []);
 
-
-
-useEffect(()=>{
-  let valor = localStorage.getItem("tasks")  
-  if(valor){
-    setTareas(JSON.parse(valor))
-  }
-}, [])
-
-
-  useEffect(()=>{
+  useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tareas));
-  }, [tareas])
-
-
-
-
-
-
+  }, [tareas]);
 
   function createTask(newTask) {
-    if (
-      tareas.find((e)=> e.name === newTask)
-    ) {
+    if (tareas.find((e) => e.name === newTask)) {
       alert("Su tarea ya esta");
     } else {
       setTareas([
@@ -41,23 +30,16 @@ useEffect(()=>{
     }
   }
 
+  const toggleTask = task => {
+    setTareas(
+      tareas.map((e) => ((e.name === task.name) ? { ...e, estado: !e.estado } : e))
+    );
+  }
+
   return (
     <div>
       <FormTask createTask={createTask} />
-      <table>
-        <thead>
-          <tr>
-            <th>Tareas</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tareas.map((e) => (
-            <tr key={e.name}>
-              <td>{e.name}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <TaskTable tasks={tareas} toggleTask = {toggleTask}/>
     </div>
   );
 }
