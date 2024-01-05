@@ -1,30 +1,40 @@
-import FormTask from "./components/FormTask";
 import { useEffect, useState } from "react";
+import FormTask from "./components/FormTask";
 
 function App() {
   const [tareas, setTareas] = useState([]);
 
 
+
+
+useEffect(()=>{
+  let valor = localStorage.getItem("tasks")  
+  if(valor){
+    setTareas(JSON.parse(valor))
+  }
+}, [])
+
+
   useEffect(()=>{
-    let valor = localStorage.getItem("tasks")
-    if (valor){
-      setTareas(JSON.parse(valor))
-    }
-  }, [])
-
-
-  useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tareas));
-  }, [tareas]);
+  }, [tareas])
 
-  function createTask(taskName) {
-    if (tareas.find((e) => e.name === taskName)) {
-      alert("Su tarea ya fue puesta");
+
+
+
+
+
+
+  function createTask(newTask) {
+    if (
+      tareas.find((e)=> e.name === newTask)
+    ) {
+      alert("Su tarea ya esta");
     } else {
       setTareas([
         ...tareas,
         {
-          name: taskName,
+          name: newTask,
           estado: false,
         },
       ]);
