@@ -2,14 +2,10 @@ import React from "react";
 
 function TaskRow({e, toggleTask}) {
   return (
-    <tr>
+    <tr >
       <td>
-        {e.name}
-        <input
-          type="checkbox"
-          checked={e.estado}
-          onChange={() => toggleTask(e)}
-        />
+        {e.nombre}
+        <input type="checkbox" checked={e.estado} onChange={()=>toggleTask(e)}/>
       </td>
     </tr>
   );

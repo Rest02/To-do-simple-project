@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import TaskTable from "./components/TaskTable";
+import { useState, useEffect } from "react";
 import FormTask from "./components/FormTask";
+import TaskTable from "./components/TaskTable";
 
 function App() {
   const [tareas, setTareas] = useState([]);
 
   useEffect(() => {
-    let valor = localStorage.getItem("tasks");
-    if (valor) {
-      setTareas(JSON.parse(valor));
+    let value = localStorage.getItem("tasks");
+    if (value) {
+      setTareas(JSON.parse(value));
     }
   }, []);
 
@@ -16,30 +16,37 @@ function App() {
     localStorage.setItem("tasks", JSON.stringify(tareas));
   }, [tareas]);
 
-  function createTask(newTask) {
-    if (tareas.find((e) => e.name === newTask)) {
-      alert("Su tarea ya esta");
+  function createTask(newTaskName) {
+    if (tareas.find((e) => e.nombre === newTaskName)) {
+      alert("Su tarea ya fue ingresada");
     } else {
       setTareas([
         ...tareas,
         {
-          name: newTask,
+          nombre: newTaskName,
           estado: false,
         },
       ]);
     }
   }
 
-  const toggleTask = task => {
+  function toggleTask(filterTask) {
     setTareas(
-      tareas.map((e) => ((e.name === task.name) ? { ...e, estado: !e.estado } : e))
+      tareas.map((e) =>
+        e.nombre == filterTask.nombre ? { ...e, estado: !e.estado } : e
+      )
     );
   }
 
   return (
     <div>
       <FormTask createTask={createTask} />
-      <TaskTable tasks={tareas} toggleTask = {toggleTask}/>
+      <TaskTable tareas={tareas} toggleTask={toggleTask} />
+      <TaskTable
+        tareas={tareas}
+        toggleTask={toggleTask}
+        muestraCompletadas={true}
+      />
     </div>
   );
 }
