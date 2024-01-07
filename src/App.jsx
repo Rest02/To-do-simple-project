@@ -4,6 +4,7 @@ import TaskTable from "./components/TaskTable";
 
 function App() {
   const [tareas, setTareas] = useState([]);
+  const [ValorDelEstado, setValorDelEstado] = useState(false);
 
   useEffect(() => {
     let value = localStorage.getItem("tasks");
@@ -42,11 +43,21 @@ function App() {
     <div>
       <FormTask createTask={createTask} />
       <TaskTable tareas={tareas} toggleTask={toggleTask} />
-      <TaskTable
-        tareas={tareas}
-        toggleTask={toggleTask}
-        muestraCompletadas={true}
-      />
+      <div>
+        <input
+          type="checkbox"
+          onChange={(e) => setValorDelEstado(!ValorDelEstado)}
+        />{" "}
+        <label> Mostrar lista de tareas realizadas </label>
+      </div>
+
+      {ValorDelEstado == true ? (
+        <TaskTable
+          tareas={tareas}
+          toggleTask={toggleTask}
+          ValorDelEstado={ValorDelEstado}
+        />
+      ) : null}
     </div>
   );
 }

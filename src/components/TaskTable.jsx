@@ -1,15 +1,14 @@
 import React from "react";
 import TaskRow from "./TaskRow";
 
-function TaskTable({ tareas, toggleTask, muestraCompletadas=false}) {
-  const TaskTableRows = (valorDelEstado) => {
-    return (
-      tareas
-      .filter(tareas => tareas.estado === valorDelEstado)
-      .map((e) => (
+function TaskTable({ tareas, toggleTask, ValorDelEstado=false}) {
+  const miFuncion = () => {
+    return( 
+    tareas
+    .filter((e) => e.estado === ValorDelEstado )
+    .map((e) => (
       <TaskRow e={e} key={e.nombre} toggleTask={toggleTask} />
-    ))
-    )
+    )))
   };
 
   return (
@@ -19,7 +18,7 @@ function TaskTable({ tareas, toggleTask, muestraCompletadas=false}) {
           <th>Tareas</th>
         </tr>
       </thead>
-      <tbody>{TaskTableRows(muestraCompletadas)}</tbody>
+      <tbody>{miFuncion(ValorDelEstado)}</tbody>
     </table>
   );
 }
