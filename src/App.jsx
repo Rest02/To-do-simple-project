@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import FormTask from "./components/FormTask";
 import TableTask from "./components/TableTask";
-import VisualizarTareas from './components/VisualizarTareas'
+import VisualTaskDone from "./components/VisualTaskDone";
 
 function App() {
   const [tareas, setTareas] = useState([
-    { nombre: "Mi primer tarea", estado: true },
+    { nombre: "Mi primera tarea", estado: false },
     { nombre: "Mi segunda tarea", estado: false },
-    { nombre: "Mi tercera tarea", estado: false },
+    { nombre: "Mi tervera tarea", estado: false },
   ]);
-  const [valor, setValor] = useState(false);
+
+  const [valorEstado, setValorEstado] = useState(false);
 
   useEffect(() => {
     let value = localStorage.getItem("tasks");
@@ -23,18 +24,25 @@ function App() {
     localStorage.setItem("tasks", JSON.stringify(tareas));
   }, [tareas]);
 
-  function createTask(newTask) {
-    if (tareas.find((e) => e.nombre == newTask)) {
-      alert("Su tarea ya se encuentra en la lista");
+  function createTask(taskName) {
+    if (tareas.find((e) => e.nombre == taskName)) {
+      alert("Su tarea ya fue ingresada");
     } else {
       setTareas([
         ...tareas,
         {
-          nombre: newTask,
+          nombre: taskName,
           estado: false,
         },
       ]);
     }
+  }
+
+  function deleteTask() {
+    if (window.confirm("Esta seguro de lo que esta haciendo")) {
+      setTareas(tareas.filter((e) => e.estado == false));
+    }
+    setValorEstado(false);
   }
 
   function toggleTask(taskName) {
@@ -45,27 +53,28 @@ function App() {
     );
   }
 
-
-  function deleteTask(taskName){
-    if(window.confirm("Estas seguro de lo que quieres hacer ?")){
-      setTareas(tareas.filter((e)=> e.estado == false ))
-    }
-    setValor(false)
-  }
-
-
   return (
-    <>
-      <FormTask createTask={createTask} />
-      <TableTask tareas={tareas} toggleTask={toggleTask} />
+    <main className="bg-dark vh-100 text-white">
+      <div className="container p-4 col-md-4 offset-md-4">
+        <FormTask createTask={createTask} />
+        <TableTask tareas={tareas} toggleTask={toggleTask} />
 
-      <VisualizarTareas isChecked={valor}
-      setValor = {(checked)=>setValor(checked)} deleteTask={deleteTask}/>
+        {/* <VisualTaskDone setValorEstado={setValorEstado} valorEstado = {valorEstado}/> */}
+        <VisualTaskDone
+          setValorEstado={(checked) => setValorEstado(checked)}
+          deleteTask={deleteTask}
+          isChecked={valorEstado}
+        />
 
-      {valor == true ? (
-        <TableTask tareas={tareas} toggleTask={toggleTask} valor={valor} />
-      ) : null}
-    </>
+        {valorEstado == true ? (
+          <TableTask
+            tareas={tareas}
+            toggleTask={toggleTask}
+            valorEstado={valorEstado}
+          />
+        ) : null}
+      </div>
+    </main>
   );
 }
 
